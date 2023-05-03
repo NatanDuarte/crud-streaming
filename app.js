@@ -18,9 +18,9 @@ process.env.JWT_SECRET = secretKey;
 
 app.use(cors());
 app.use(express.json());
-app.use('/auth', authRoutes);
-app.use('/livestream', livestreamRoutes);
-app.use('/users', userRoutes);
+app.use(authRoutes);
+app.use(livestreamRoutes);
+app.use(userRoutes);
 
 mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Conectado ao MongoDB'))
