@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+
 
 const userController = {};
 
@@ -9,10 +11,15 @@ userController.createUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
+    // Read image file
+    const image = fs.readFileSync('./public/images/user.png');
+    const base64Image = Buffer.from(image).toString('base64');
+    
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
+      profileImage: base64Image,
     });
     res.status(201).json({ user });
   } catch (error) {
