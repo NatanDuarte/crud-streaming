@@ -10,6 +10,10 @@ const LivestreamSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    thumbnail: {
+      type: String,
+      required: false,
+    },
     date: {
       type: Date,
       required: true,
