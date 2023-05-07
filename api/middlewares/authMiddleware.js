@@ -6,7 +6,7 @@ const verifyToken = (token) => {
     return decoded;
   } catch (error) {
     console.error(error);
-    throw new Error('Autenticação inválida');
+    throw new Error(error);
   }
 };
 
@@ -22,7 +22,7 @@ const authMiddleware = (req, res, next) => {
     next();
   } catch (error) {
     console.error(error);
-    res.status(401).json({ error: 'Autenticação inválida' });
+    res.status(401).json({ error: 'Autenticação inválida', details: error.message });
   }
 };
 
