@@ -2,6 +2,7 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
+const UserDto = require('../dto/return/UserReturnDto');
 
 
 const userController = {};
@@ -43,7 +44,9 @@ userController.createUser = async (req, res) => {
       password: hashedPassword,
       profileImage: base64Image,
     });
-    res.status(201).json({ user });
+
+    const userDto = UserDto(user);
+    res.status(201).json({ userDto });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Erro ao criar usuário', details: error.message });
@@ -54,7 +57,10 @@ userController.createUser = async (req, res) => {
 userController.getUsers = async (req, res) => {
   try {
     const users = await User.find();
-    res.json({ users });
+
+    const listOfUserDtos = [];
+    users.forEach(user => listOfUserDtos.push(UserDto(user)))
+    res.json({ listOfUserDtos });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Erro ao listar usuários', details: error.message });
@@ -65,7 +71,8 @@ userController.getUsers = async (req, res) => {
 userController.getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-    res.json({ user });
+    const userDto = UserDto(user);
+    res.json({ userDto });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Erro ao buscar usuário', details: error.message });
@@ -99,7 +106,8 @@ userController.updateUser = async (req, res) => {
       { new: true }
     );
 
-    res.status(200).json({ user });
+    const userDto = UserDto(user);
+    res.status(200).json({ userDto });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Erro ao atualizar usuário', details: error.message });
@@ -110,10 +118,10 @@ userController.updateUser = async (req, res) => {
 userController.deleteUser = async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id);
-    res.status(204).end();
+    res.status(200).json({ success: true }).end();
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Erro ao deletar usuário', details: error.message });
+    res.status(500).json({ success: false, error: 'Erro ao deletar usuário', details: error.message });
   }
 };
 

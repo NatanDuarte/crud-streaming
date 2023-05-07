@@ -3,10 +3,10 @@ const router = express.Router();
 const authMiddleware = require('../middlewares/authMiddleware');
 const livestreamController = require('../controllers/livestreamController');
 
-router.post('/stream', authMiddleware, livestreamController.createLivestream);
-router.get('/stream', livestreamController.getAllLivestreams);
-router.get('/stream/:id', livestreamController.getLivestreamById);
-router.put('/stream/:id', authMiddleware, livestreamController.updateLivestreamById);
-router.delete('/stream/:id', authMiddleware, livestreamController.deleteLivestreamById);
+router.post('/create', authMiddleware, livestreamController.createLivestream);
+router.get('/all', livestreamController.getAllLivestreams);
+router.get('/get/:id', livestreamController.getLivestreamById);
+router.put('/put/:id', authMiddleware, livestreamController.updateLivestreamById);
+router.delete('/delete/:id', authMiddleware, livestreamController.deleteLivestreamById);
 
 module.exports = router;
