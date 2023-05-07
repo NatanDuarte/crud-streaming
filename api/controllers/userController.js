@@ -27,7 +27,7 @@ userController.createUser = async (req, res) => {
     }
 
     const emailInDB = await User.find({ email: email });
-    if (emailInDB != null) {
+    if (emailInDB.length > 0) {
       res.status(409).json({ error: 'E-mail já existe' })
       return;
     }
